@@ -1,8 +1,9 @@
 const express = require("express");
 const path = require("path");
-const ytdlp = require("yt-dlp-exec");
+const ytdlp = require("yt-dlp-exec").default;
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const os = require("os");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,12 +54,18 @@ app.post("/convert", async (req, res) => {
 
   try {
     console.log(`Starting download: ${url} → ${filename}`);
+
+    // Determine binary path cross-platform
+    const binaryPath = path.join(__dirname, "node_modules", "yt-dlp-exec", "bin", os.platform() === "win32" ? "yt-dlp.exe" : "yt-dlp");
+
     await ytdlp(url, {
       format: "bestaudio/best",
-      output: outputPath
+      output: outputPath,
+      executablePath: binaryPath,
+      update: true // ensures the binary is downloaded if missing
     });
-    console.log(`Download finished: ${filename}`);
 
+    console.log(`Download finished: ${filename}`);
     return res.render("index", {
       success: true,
       song_title: videoID,
@@ -80,5 +87,6 @@ app.post("/convert", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
 
 
