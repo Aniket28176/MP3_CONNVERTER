@@ -9,11 +9,15 @@ const PORT = process.env.PORT || 3000;
 
 // Ensure public folder exists
 const publicDir = path.join(__dirname, "public");
-if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir);
+try {
+  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir);
+} catch (err) {
+  console.error("Error creating public directory:", err);
+}
 
 // Middleware
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+app.use(express.static(publicDir));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Home page
@@ -27,9 +31,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Convert route - always .webm
+// Convert route
 app.post("/convert", async (req, res) => {
-  const { videoID } = req.body;
+  const { videoID, format } = req.body;
 
   if (!videoID) {
     return res.render("index", {
@@ -37,25 +41,29 @@ app.post("/convert", async (req, res) => {
       message: "Please enter a valid YouTube Video ID.",
       song_title: "",
       song_link: "",
-      format: "webm"
+      format: format || "webm"
     });
   }
 
+  // Default to .webm if unsupported format
+  const fileFormat = format === "mp4" ? "mp4" : "webm";
   const url = `https://www.youtube.com/watch?v=${videoID}`;
-  const filename = `${videoID}.webm`;
+  const filename = `${videoID}.${fileFormat}`;
   const outputPath = path.join(publicDir, filename);
 
   try {
+    console.log(`Starting download: ${url} → ${filename}`);
     await ytdlp(url, {
       format: "bestaudio/best",
       output: outputPath
     });
+    console.log(`Download finished: ${filename}`);
 
     return res.render("index", {
       success: true,
       song_title: videoID,
       song_link: `/${filename}`,
-      format: "webm",
+      format: fileFormat,
       message: ""
     });
   } catch (error) {
@@ -65,10 +73,12 @@ app.post("/convert", async (req, res) => {
       message: "Error downloading video. Make sure the Video ID is correct.",
       song_title: "",
       song_link: "",
-      format: "webm"
+      format: fileFormat
     });
   }
 });
 
+// Start server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
 
