@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const ytdlp = require("yt-dlp-exec").default; // <-- fixed import
+const ytdlpExec = require("yt-dlp-exec"); // cross-platform import
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const os = require("os");
@@ -64,6 +64,9 @@ app.post("/convert", async (req, res) => {
       os.platform() === "win32" ? "yt-dlp.exe" : "yt-dlp"
     );
 
+    // Ensure function is callable
+    const ytdlp = ytdlpExec.default || ytdlpExec;
+
     // Download video
     await ytdlp(url, {
       format: "bestaudio/best",
@@ -94,3 +97,4 @@ app.post("/convert", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
