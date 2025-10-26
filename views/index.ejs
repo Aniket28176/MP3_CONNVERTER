@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Downloader</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="top-container">
+    <h1><i class="fab fa-youtube"></i> YouTube Downloader</h1>
+  <form action="/convert" method="POST" id="form">
+    <input type="text" name="videoID" placeholder="Enter Video ID" required>
+    <select name="format">
+      <option value="mp3" <% if(format==="mp3"){ %>selected<% } %>>MP3 (Audio)</option>
+      <option value="mp4" <% if(format==="mp4"){ %>selected<% } %>>MP4 (Video)</option>
+    </select>
+    <button type="submit">Convert</button>
+  </form>
+  </div>
+
+  <div class="bottom-container">
+    <% if (success === true) { %>
+    <div class="success">
+      <h3>✅ <%= song_title %> converted successfully!</h3>
+      <a href="<%= song_link %>" target="_blank">
+        <button>DOWNLOAD <%= format.toUpperCase() %></button>
+      </a>
+    </div>
+  <% } else if (success === false) { %>
+    <div class="errors">
+      <p>❌ <%= message %></p>
+    </div>
+  <% } %>
+  </div>
+</body>
+</html>

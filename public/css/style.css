@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: white;
+  overflow-x: hidden;
+  background-color: #111;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* ---------- Top Section ---------- */
+.top-container {
+  background-color: #ff0000;
+  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.top-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px black;
+}
+
+.top-container i {
+  margin-right: 10px;
+}
+
+/* ---------- Form ---------- */
+#form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#form input, 
+#form select {
+  width: 300px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  outline: none;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+#form select {
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+#form button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  background-color: #fff;
+  color: #ff0000;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  transition: 0.3s ease-in-out;
+}
+
+#form button:hover {
+  background-color: #ff0000;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ---------- Success / Error ---------- */
+.bottom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.success, .errors {
+  width: 400px;
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+.success {
+  background-color: #fff;
+  color: #111;
+}
+
+.success button {
+  margin-top: 10px;
+  padding: 12px 20px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.3s ease-in-out;
+}
+
+.success button:hover {
+  background-color: #fff;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+}
+
+.errors {
+  background-color: #ffe6e6;
+  color: #ff0000;
+  border: 1px solid red;
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width: 768px) {
+  .top-container {
+    height: auto;
+    padding: 40px 20px;
+  }
+
+  #form input, #form select {
+    width: 90%;
+  }
+
+  .success, .errors {
+    width: 90%;
+  }
+}
