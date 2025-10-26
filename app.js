@@ -3,7 +3,6 @@ const path = require("path");
 const ytdlpExec = require("yt-dlp-exec"); // cross-platform import
 const bodyParser = require("body-parser");
 const fs = require("fs");
-const os = require("os");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,7 +45,6 @@ app.post("/convert", async (req, res) => {
     });
   }
 
-  // Default to .webm if unsupported format
   const fileFormat = format === "mp4" ? "mp4" : "webm";
   const url = `https://www.youtube.com/watch?v=${videoID}`;
   const filename = `${videoID}.${fileFormat}`;
@@ -55,23 +53,13 @@ app.post("/convert", async (req, res) => {
   try {
     console.log(`Starting download: ${url} → ${filename}`);
 
-    // Cross-platform binary path
-    const binaryPath = path.join(
-      __dirname,
-      "node_modules",
-      "yt-dlp-exec",
-      "bin",
-      os.platform() === "win32" ? "yt-dlp.exe" : "yt-dlp"
-    );
-
-    // Ensure function is callable
+    // Ensure callable function
     const ytdlp = ytdlpExec.default || ytdlpExec;
 
-    // Download video
+    // ✅ Render-ready: no executablePath, just update: true
     await ytdlp(url, {
       format: "bestaudio/best",
       output: outputPath,
-      executablePath: binaryPath,
       update: true // automatically downloads binary if missing
     });
 
@@ -97,4 +85,3 @@ app.post("/convert", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
-
