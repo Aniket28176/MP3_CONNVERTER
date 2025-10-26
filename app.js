@@ -53,10 +53,10 @@ app.post("/convert", async (req, res) => {
   try {
     console.log(`Starting download: ${url} → ${filename}`);
 
-    // Ensure callable function
+    // Ensure callable function for all environments
     const ytdlp = ytdlpExec.default || ytdlpExec;
 
-    // ✅ Render-ready: no executablePath, just update: true
+    // Render-ready call: no executablePath
     await ytdlp(url, {
       format: "bestaudio/best",
       output: outputPath,
